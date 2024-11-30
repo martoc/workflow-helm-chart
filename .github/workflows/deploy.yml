@@ -20,6 +20,9 @@ on:
       gcp_project_id:
         required: false
         type: string
+      environment:
+        required: true
+        type: string
       cluster_name:
         description: 'Cluster name'
         required: true
@@ -37,21 +40,20 @@ on:
         required: true
         type: string
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-24.04
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Tag
+        uses: martoc/action-tag@v0
+        with:
+          execute: load
       - name: 'Set up Cloud SDK'
         uses: google-github-actions/setup-gcloud@v2
         with:
           version: 499.0.0
         if: ${{ inputs.registry == 'gcp' }}
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 10
-          fetch-tags: true
-      - name: Tag
-        uses: martoc/action-tag@v0
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ inputs.workload_identity_provider }}
@@ -69,6 +71,7 @@ jobs:
           region: ${{ inputs.region }}
           repository_name: ${{ inputs.repository_name }}
           gcp_project_id: ${{ inputs.gcp_project_id }}
+          environment: ${{ inputs.environment }}
           workload_identity_provider: ${{ inputs.workload_identity_provider }}
           service_account: ${{ inputs.service_account }}
           cluster_name: ${{ inputs.cluster_name }}

@@ -46,4 +46,3 @@ jobs:
           gcp_project_id: ${{ inputs.gcp_project_id }}
       - name: Release on GitHub
         uses: martoc/action-release@v0
-        if: ${{ github.event_name != 'pull_request' }}
