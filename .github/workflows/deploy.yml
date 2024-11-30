@@ -5,39 +5,39 @@ on:
         required: true
         description: 'Registry to use e.g.: gcp'
         type: string
+      repository_name:
+        required: true
+        type: string
+      region:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+      cluster_name:
+        description: Cluster name
+        required: true
+        type: string
+      chart_name:
+        description: Chart name
+        required: true
+        type: string
+      chart_version:
+        description: Chart version
+        required: true
+        type: string
+      chart_value_file:
+        description: Chart value file
+        required: true
+        type: string
       workload_identity_provider:
         required: false
         type: string
       service_account:
         required: false
         type: string
-      region:
-        required: true
-        type: string
-      repository_name:
-        required: true
-        type: string
       gcp_project_id:
         required: false
-        type: string
-      environment:
-        required: true
-        type: string
-      cluster_name:
-        description: 'Cluster name'
-        required: true
-        type: string
-      chart_name:
-        description: 'Chart name'
-        required: true
-        type: string
-      chart_version:
-        description: 'Chart version'
-        required: true
-        type: string
-      chart_value_file:
-        description: 'Chart value file'
-        required: true
         type: string
 jobs:
   deploy:
