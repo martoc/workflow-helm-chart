@@ -3,7 +3,7 @@ on:
     inputs:
       registry:
         required: true
-        description: 'Registry to use e.g.: gcp'
+        description: "Registry to use e.g.: gcp"
         type: string
       workload_identity_provider:
         required: false
@@ -30,6 +30,9 @@ jobs:
         with:
           fetch-depth: 10
           fetch-tags: true
+      - name: Lint
+        run: |
+          helm lint
       - name: Tag
         uses: martoc/action-tag@v0
       - uses: google-github-actions/auth@v2
