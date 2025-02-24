@@ -39,10 +39,14 @@ on:
       gcp_project_id:
         required: false
         type: string
-      version:
+      ref:
         required: false
         type: string
         default: main
+      version:
+        required: false
+        type: string
+        default: ""
 jobs:
   deploy:
     runs-on: ubuntu-24.04
@@ -53,7 +57,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: v${{ inputs.version }}
+          ref: ${{ inputs.ref }}
       - name: Tag
         uses: martoc/action-tag@v0
         with:
