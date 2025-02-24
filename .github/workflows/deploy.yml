@@ -62,12 +62,12 @@ jobs:
         uses: martoc/action-tag@v0
         with:
           execute: load
-        if: inputs.version == 'main'
+        if: inputs.ref == 'main'
       - name: Set Version
         run: |
           export TAG_VERSION=${{ inputs.version }}
           export TAG_NAME=v${{ inputs.version }}
-        if: inputs.version != 'main'
+        if: inputs.ref != 'main'
       - name: "Set up Cloud SDK"
         uses: google-github-actions/setup-gcloud@v2
         with:
