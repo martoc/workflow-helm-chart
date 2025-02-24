@@ -39,6 +39,10 @@ on:
       gcp_project_id:
         required: false
         type: string
+      version:
+        required: false
+        type: string
+        default: main
 jobs:
   deploy:
     runs-on: ubuntu-24.04
@@ -48,10 +52,17 @@ jobs:
       - run: set
       - name: Checkout
         uses: actions/checkout@v4
+        with: 
+          ref: ${{ inputs.version }}
       - name: Tag
         uses: martoc/action-tag@v0
         with:
           execute: load
+        if: inputs.version == 'main'
+      - name: Set Version
+        run: |
+          export TAG_VERSION=${{ inputs.version }}
+        if: inputs.version != 'main'
       - name: 'Set up Cloud SDK'
         uses: google-github-actions/setup-gcloud@v2
         with:
