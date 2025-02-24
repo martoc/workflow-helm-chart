@@ -3,7 +3,7 @@ on:
     inputs:
       registry:
         required: true
-        description: 'Registry to use e.g.: gcp'
+        description: "Registry to use e.g.: gcp"
         type: string
       repository_name:
         required: true
@@ -52,8 +52,8 @@ jobs:
       - run: set
       - name: Checkout
         uses: actions/checkout@v4
-        with: 
-          ref: ${{ inputs.version }}
+        with:
+          ref: v${{ inputs.version }}
       - name: Tag
         uses: martoc/action-tag@v0
         with:
@@ -62,8 +62,9 @@ jobs:
       - name: Set Version
         run: |
           export TAG_VERSION=${{ inputs.version }}
+          export TAG_NAME=v${{ inputs.version }}
         if: inputs.version != 'main'
-      - name: 'Set up Cloud SDK'
+      - name: "Set up Cloud SDK"
         uses: google-github-actions/setup-gcloud@v2
         with:
           version: 499.0.0
