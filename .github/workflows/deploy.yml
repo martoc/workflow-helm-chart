@@ -80,8 +80,8 @@ jobs:
         if: ${{ inputs.registry == 'gcp' }}
       - uses: google-github-actions/get-gke-credentials@v2
         with:
-          cluster_name: ${{ inputs.cluster_name }}
           location: ${{ inputs.region }}
+          cluster_name: ${{ inputs.cluster_name }}
         if: ${{ inputs.registry == 'gcp' }}
       - name: Helm Chart Deploy
         uses: martoc/action-helm-deploy@v0
@@ -91,9 +91,6 @@ jobs:
           repository_name: ${{ inputs.repository_name }}
           gcp_project_id: ${{ inputs.gcp_project_id }}
           environment: ${{ inputs.environment }}
-          workload_identity_provider: ${{ inputs.workload_identity_provider }}
-          service_account: ${{ inputs.service_account }}
-          cluster_name: ${{ inputs.cluster_name }}
           chart_name: ${{ inputs.chart_name }}
           chart_version: ${{ inputs.chart_version }}
           chart_value_file: ${{ inputs.chart_value_file }}
