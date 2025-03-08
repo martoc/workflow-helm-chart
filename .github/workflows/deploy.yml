@@ -67,6 +67,8 @@ jobs:
         run: |
           export TAG_VERSION=${{ inputs.version }}
           export TAG_NAME=v${{ inputs.version }}
+          echo "TAG_VERSION=$TAG_VERSION" >> "$GITHUB_ENV"
+          echo "TAG_NAME=$TAG_NAME" >> "$GITHUB_ENV"
         if: inputs.ref != 'main'
       - name: "Set up Cloud SDK"
         uses: google-github-actions/setup-gcloud@v2
