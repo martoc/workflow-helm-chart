@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-        if: inputs.ref != ''
+        if: inputs.ref != 'main'
       - name: Set Version
         run: |
           export TAG_VERSION=${{ inputs.version }}
@@ -70,12 +70,12 @@ jobs:
         uses: martoc/action-tag@v0
         with:
           execute: load
-        if: inputs.ref == ''
+        if: inputs.ref == 'main'
       - name: Checkout
         uses: actions/checkout@v4
-        if: inputs.ref == ''
+        if: inputs.ref == 'main'
       - run: git checkout $TAG_NAME
-        if: inputs.ref == ''
+        if: inputs.ref == 'main'
       - name: "Set up Cloud SDK"
         uses: google-github-actions/setup-gcloud@v2
         with:
