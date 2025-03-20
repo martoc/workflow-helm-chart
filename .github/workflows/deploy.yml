@@ -62,7 +62,7 @@ jobs:
         uses: martoc/action-tag@v0
         with:
           execute: load
-        if: inputs.ref == 'main'
+        if: inputs.ref == ''
       - name: Set Version
         run: |
           export TAG_VERSION=${{ inputs.version }}
