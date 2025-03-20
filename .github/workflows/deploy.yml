@@ -58,11 +58,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-      - name: Tag
-        uses: martoc/action-tag@v0
-        with:
-          execute: load
-        if: inputs.ref == ''
+        if: inputs.ref != ''
       - name: Set Version
         run: |
           export TAG_VERSION=${{ inputs.version }}
@@ -70,6 +66,16 @@ jobs:
           echo "TAG_VERSION=$TAG_VERSION" >> "$GITHUB_ENV"
           echo "TAG_NAME=$TAG_NAME" >> "$GITHUB_ENV"
         if: inputs.ref != ''
+      - name: Load Version
+        uses: martoc/action-tag@v0
+        with:
+          execute: load
+        if: inputs.ref == ''
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: inputs.ref == ''
+      - run: git checkout $TAG_NAME
+        if: inputs.ref == ''
       - name: "Set up Cloud SDK"
         uses: google-github-actions/setup-gcloud@v2
         with:
