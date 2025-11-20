@@ -55,7 +55,7 @@ jobs:
     steps:
       - run: set
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ inputs.ref }}
         if: inputs.ref != 'main'
@@ -72,7 +72,7 @@ jobs:
           execute: load
         if: inputs.ref == 'main'
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         if: inputs.ref == 'main'
       - name: "Set up Cloud SDK"
         uses: google-github-actions/setup-gcloud@v3
