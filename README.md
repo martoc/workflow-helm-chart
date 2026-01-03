@@ -1,5 +1,3 @@
-[![checks](https://github.com/martoc/workflow-helm-chart/actions/workflows/tag.yml/badge.svg?branch=main&event=push)](https://github.com/martoc/workflow-helm-chart/actions/workflows/tag.yml)
-![GitHub Latest Release)](https://img.shields.io/github/v/release/martoc/workflow-helm-chart?logo=github)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # workflow-helm-chart
