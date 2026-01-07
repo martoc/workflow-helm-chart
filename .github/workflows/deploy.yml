@@ -51,6 +51,10 @@ on:
         required: false
         type: string
         default: ""
+      aws_role_arn_registry:
+        required: false
+        type: string
+        default: ""
 jobs:
   deploy:
     runs-on: ubuntu-24.04
@@ -83,6 +87,7 @@ jobs:
           workload_identity_provider: ${{ inputs.workload_identity_provider }}
           service_account: ${{ inputs.service_account }}
           aws_role_arn: ${{ inputs.aws_role_arn }}
+          aws_role_arn_registry: ${{ inputs.aws_role_arn_registry }}
           registry: ${{ inputs.registry }}
           region: ${{ inputs.region }}
           repository_name: ${{ inputs.repository_name }}
