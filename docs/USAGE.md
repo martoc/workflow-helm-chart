@@ -86,7 +86,8 @@ Deploys Helm charts to Kubernetes clusters.
 | `workload_identity_provider` | string | No | - | GCP WIF provider (GCP only) |
 | `service_account` | string | No | - | GCP service account (GCP only) |
 | `gcp_project_id` | string | No | - | GCP project ID (GCP only) |
-| `aws_role_arn` | string | No | - | AWS IAM role ARN (AWS only) |
+| `aws_role_arn` | string | No | - | AWS IAM role ARN for EKS cluster access (AWS only) |
+| `aws_role_arn_registry` | string | No | - | AWS IAM role ARN for ECR registry access (AWS only) |
 | `ref` | string | No | `main` | Git ref to checkout |
 | `version` | string | No | - | Version override |
 
@@ -130,7 +131,10 @@ jobs:
       chart_version: "1.0.0"
       chart_value_file: values/production.yaml
       aws_role_arn: ${{ vars.AWS_ROLE_ARN }}
+      aws_role_arn_registry: ${{ vars.AWS_ROLE_ARN_REGISTRY }}  # Optional: separate role for ECR
 ```
+
+**Note:** Use `aws_role_arn_registry` when you need separate IAM roles for ECR access and EKS cluster access. This follows the principle of least privilege by allowing different permission sets for pulling charts vs deploying to clusters.
 
 ## Environment Protection
 
@@ -164,8 +168,10 @@ The workflows use semantic versioning via the `martoc/action-tag` action. Versio
 
 ### AWS Setup
 
-1. Create an IAM role with trust policy for GitHub Actions
-2. Attach policies for:
-   - ECR push access
-   - EKS cluster access
-3. Configure OIDC identity provider in AWS IAM
+1. Configure OIDC identity provider in AWS IAM for GitHub Actions
+2. Create IAM role(s) with trust policy for GitHub Actions:
+   - **Single role:** Create one role with both ECR and EKS permissions
+   - **Separate roles (recommended):** Create distinct roles for ECR and EKS access
+3. Attach policies:
+   - ECR role: `AmazonEC2ContainerRegistryReadOnly` or custom policy for chart pull
+   - EKS role: Kubernetes RBAC permissions for Helm deployments
