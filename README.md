@@ -2,15 +2,24 @@
 
 # workflow-helm-chart
 
-Reusable GitHub Actions workflows for building and deploying Helm charts to GCP Artifact Registry and Kubernetes clusters.
+Reusable GitHub Actions workflows for building and deploying Helm charts to cloud container registries and Kubernetes clusters.
+
+## Supported Platforms
+
+| Platform | Registry | Cluster | Authentication |
+|----------|----------|---------|----------------|
+| GCP | Artifact Registry | GKE | Workload Identity Federation |
+| AWS | ECR | EKS | IAM Role ARN (OIDC) |
 
 ## Features
 
 - Helm chart linting and packaging
-- Push to GCP Artifact Registry
-- Deploy to GKE clusters
+- Push to GCP Artifact Registry or AWS ECR
+- Deploy to GKE or EKS clusters
 - Automatic semantic versioning
-- Workload Identity Federation support
+- Workload Identity Federation support (GCP)
+- OIDC authentication support (AWS)
+- GitHub Environment protection for deployments
 
 ## Quick Start
 
@@ -32,7 +41,7 @@ jobs:
       service_account: ${{ vars.SERVICE_ACCOUNT }}
 ```
 
-### Deploy Workflow
+### Deploy Workflow (GCP)
 
 ```yaml
 jobs:
@@ -54,17 +63,37 @@ jobs:
       service_account: ${{ vars.SERVICE_ACCOUNT }}
 ```
 
+### Deploy Workflow (AWS)
+
+```yaml
+jobs:
+  deploy:
+    permissions:
+      contents: read
+      id-token: write
+    uses: martoc/workflow-helm-chart/.github/workflows/deploy.yml@v0
+    with:
+      registry: aws
+      region: eu-west-1
+      repository_name: helm-charts
+      cluster_name: my-eks-cluster
+      chart_name: my-app
+      chart_version: "1.0.0"
+      chart_value_file: values/production.yaml
+      aws_role_arn: ${{ vars.AWS_ROLE_ARN }}
+```
+
 ## Documentation
 
-- [Usage Guide](./docs/USAGE.md) - Detailed usage instructions and examples
+- [Usage Guide](./docs/USAGE.md) - Detailed usage instructions, all inputs, and examples
 - [Code Style](./docs/CODESTYLE.md) - Code style guidelines for contributors
 
 ## Available Workflows
 
 | Workflow | Description |
 |----------|-------------|
-| `build.yml` | Build and push Helm charts to GCP Artifact Registry |
-| `deploy.yml` | Deploy Helm charts to GKE clusters |
+| `build.yml` | Build and push Helm charts to container registry |
+| `deploy.yml` | Deploy Helm charts to Kubernetes clusters |
 
 ## Licence
 
