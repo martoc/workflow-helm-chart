@@ -55,7 +55,7 @@ jobs:
   deploy:
     runs-on: ubuntu-24.04
     environment:
-      name: ${{ inputs.registry }}/${{ inputs.gcp_project_id }}/${{ inputs.region }}/${{ inputs.cluster_name }}
+      name: ${{ inputs.registry }}/${{ inputs.environment }}/${{ inputs.region }}/${{ inputs.cluster_name }}
     steps:
       - run: set
       - name: Checkout
