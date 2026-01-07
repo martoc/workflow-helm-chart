@@ -57,7 +57,6 @@ jobs:
     environment:
       name: ${{ inputs.registry }}/${{ inputs.environment }}/${{ inputs.region }}/${{ inputs.cluster_name }}
     steps:
-      - run: set
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -78,7 +77,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         if: inputs.ref == 'main'
-      - name: Helm Chart Dep`loy
+      - name: Helm Chart Deploy
         uses: martoc/action-helm-deploy@v0
         with:
           workload_identity_provider: ${{ inputs.workload_identity_provider }}
@@ -92,4 +91,5 @@ jobs:
           chart_name: ${{ inputs.chart_name }}
           chart_version: ${{ inputs.chart_version }}
           chart_value_file: ${{ inputs.chart_value_file }}
+          cluster_name: ${{ inputs.cluster_name }}
           version: ${{ inputs.version }}
