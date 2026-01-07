@@ -81,6 +81,7 @@ jobs:
       chart_version: "1.0.0"
       chart_value_file: values/production.yaml
       aws_role_arn: ${{ vars.AWS_ROLE_ARN }}
+      aws_role_arn_registry: ${{ vars.AWS_ROLE_ARN_REGISTRY }}  # Optional
 ```
 
 ## Documentation
