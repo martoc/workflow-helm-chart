@@ -47,6 +47,10 @@ on:
         required: false
         type: string
         default: ""
+      aws_role_arn:
+        required: false
+        type: string
+        default: ""
 jobs:
   deploy:
     runs-on: ubuntu-24.04
@@ -74,24 +78,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         if: inputs.ref == 'main'
-      - name: "Set up Cloud SDK"
-        uses: google-github-actions/setup-gcloud@v3
-        with:
-          version: 499.0.0
-        if: ${{ inputs.registry == 'gcp' }}
-      - uses: google-github-actions/auth@v3
+      - name: Helm Chart Dep`loy
+        uses: martoc/action-helm-deploy@v0
         with:
           workload_identity_provider: ${{ inputs.workload_identity_provider }}
           service_account: ${{ inputs.service_account }}
-        if: ${{ inputs.registry == 'gcp' }}
-      - uses: google-github-actions/get-gke-credentials@v2
-        with:
-          location: ${{ inputs.region }}
-          cluster_name: ${{ inputs.cluster_name }}
-        if: ${{ inputs.registry == 'gcp' }}
-      - name: Helm Chart Deploy
-        uses: martoc/action-helm-deploy@v0
-        with:
+          aws_role_arn: ${{ inputs.aws_role_arn }}
           registry: ${{ inputs.registry }}
           region: ${{ inputs.region }}
           repository_name: ${{ inputs.repository_name }}
