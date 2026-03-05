@@ -20,6 +20,16 @@ on:
       gcp_project_id:
         required: false
         type: string
+      aws_role_arn:
+        required: false
+        type: string
+        default: ""
+        description: "AWS IAM role ARN for OIDC authentication (AWS only)"
+      aws_account_id:
+        required: false
+        type: string
+        default: ""
+        description: "AWS Account ID for ECR registry (AWS only)"
 
 jobs:
   build:
@@ -40,6 +50,12 @@ jobs:
           workload_identity_provider: ${{ inputs.workload_identity_provider }}
           service_account: ${{ inputs.service_account }}
         if: ${{ inputs.registry == 'gcp' }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ inputs.aws_role_arn }}
+          aws-region: ${{ inputs.region }}
+        if: ${{ inputs.registry == 'aws' }}
       - name: Helm Chart Build
         uses: martoc/action-helm-build@v0
         with:
@@ -47,5 +63,6 @@ jobs:
           region: ${{ inputs.region }}
           repository_name: ${{ inputs.repository_name }}
           gcp_project_id: ${{ inputs.gcp_project_id }}
+          aws_account_id: ${{ inputs.aws_account_id }}
       - name: Release on GitHub
         uses: martoc/action-release@v0
