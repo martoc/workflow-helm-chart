@@ -48,6 +48,8 @@ Builds and pushes Helm charts to a container registry.
 | `workload_identity_provider` | string | No | - | GCP Workload Identity Provider (GCP only) |
 | `service_account` | string | No | - | GCP Service Account (GCP only) |
 | `gcp_project_id` | string | No | - | GCP project ID (GCP only) |
+| `aws_role_arn` | string | No | - | AWS IAM role ARN for OIDC authentication (AWS only) |
+| `aws_account_id` | string | No | - | AWS Account ID for ECR registry (AWS only) |
 
 **Example (GCP):**
 
@@ -65,6 +67,23 @@ jobs:
       gcp_project_id: my-project
       workload_identity_provider: ${{ vars.WIF_PROVIDER }}
       service_account: ${{ vars.SERVICE_ACCOUNT }}
+```
+
+**Example (AWS):**
+
+```yaml
+jobs:
+  build:
+    permissions:
+      contents: write
+      id-token: write
+    uses: martoc/workflow-helm-chart/.github/workflows/build.yml@v0
+    with:
+      registry: aws
+      region: eu-west-1
+      repository_name: helm-charts
+      aws_role_arn: ${{ vars.AWS_ROLE_ARN }}
+      aws_account_id: ${{ vars.AWS_ACCOUNT_ID }}
 ```
 
 ### deploy.yml
