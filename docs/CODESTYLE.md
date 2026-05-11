@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Descriptive Step Name
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 ```
 
 ### Conditional Steps
