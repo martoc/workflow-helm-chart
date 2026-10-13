@@ -3,7 +3,7 @@ on:
     inputs:
       registry:
         required: true
-        description: "Registry to use e.g.: gcp"
+        description: "Cloud to deploy to: gcp, aws or azure (AKS, chart pulled from ECR)"
         type: string
       repository_name:
         required: true
@@ -55,6 +55,21 @@ on:
         required: false
         type: string
         default: ""
+      azure_client_id:
+        description: "Entra ID identity client id (registry azure)"
+        required: false
+        type: string
+        default: ""
+      azure_tenant_id:
+        description: "Entra ID tenant id (registry azure)"
+        required: false
+        type: string
+        default: ""
+      azure_subscription_id:
+        description: "Azure subscription id (registry azure)"
+        required: false
+        type: string
+        default: ""
 jobs:
   deploy:
     runs-on: ubuntu-24.04
@@ -88,6 +103,9 @@ jobs:
           service_account: ${{ inputs.service_account }}
           aws_role_arn: ${{ inputs.aws_role_arn }}
           aws_role_arn_registry: ${{ inputs.aws_role_arn_registry }}
+          azure_client_id: ${{ inputs.azure_client_id }}
+          azure_tenant_id: ${{ inputs.azure_tenant_id }}
+          azure_subscription_id: ${{ inputs.azure_subscription_id }}
           registry: ${{ inputs.registry }}
           region: ${{ inputs.region }}
           repository_name: ${{ inputs.repository_name }}
