@@ -106,7 +106,10 @@ Deploys Helm charts to Kubernetes clusters.
 | `service_account` | string | No | - | GCP service account (GCP only) |
 | `gcp_project_id` | string | No | - | GCP project ID (GCP only) |
 | `aws_role_arn` | string | No | - | AWS IAM role ARN for EKS cluster access (AWS only) |
-| `aws_role_arn_registry` | string | No | - | AWS IAM role ARN for ECR registry access (AWS only) |
+| `aws_role_arn_registry` | string | No | - | AWS IAM role ARN for ECR registry access (AWS, and Azure, whose chart is pulled from ECR) |
+| `azure_client_id` | string | No | `""` | Entra ID identity client id (Azure only) |
+| `azure_tenant_id` | string | No | `""` | Entra ID tenant id (Azure only) |
+| `azure_subscription_id` | string | No | `""` | Azure subscription id (Azure only) |
 | `ref` | string | No | `main` | Git ref to checkout |
 | `version` | string | No | - | Version override |
 
