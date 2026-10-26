@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository provides reusable GitHub Actions workflows for building and deploying Helm charts to container registries (GCP Artifact Registry, AWS ECR) and Kubernetes clusters (GKE, EKS).
+This repository provides reusable GitHub Actions workflows for building and deploying Helm charts to container registries (GCP Artifact Registry, AWS ECR, GitHub Container Registry) and Kubernetes clusters (GKE, EKS).
 
 ## Supported Platforms
 
@@ -10,6 +10,7 @@ This repository provides reusable GitHub Actions workflows for building and depl
 |----------|----------|---------|----------------|
 | GCP | Artifact Registry | GKE | Workload Identity Federation |
 | AWS | ECR | EKS | IAM Role ARN |
+| GitHub | Container Registry (`ghcr.io`) | - (build only) | Workflow `GITHUB_TOKEN` |
 
 ## Workflow Architecture
 
@@ -42,9 +43,11 @@ Builds and pushes Helm charts to a container registry.
 
 | Input | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `registry` | string | Yes | - | Registry type (`gcp` or `aws`) |
-| `region` | string | Yes | - | Cloud region (e.g., `europe-west2`, `eu-west-1`) |
-| `repository_name` | string | Yes | - | Registry repository name |
+| `registry` | string | Yes | - | Registry type (`gcp`, `aws` or `github`) |
+| `region` | string | No | `""` | Cloud region (e.g., `europe-west2`, `eu-west-1`); required for `gcp` and `aws` |
+| `repository_name` | string | Yes | - | Artifact Registry repository, ECR namespace or `ghcr.io` namespace (e.g. `my-org/charts`) |
+| `chart_path` | string | No | `.` | Directory holding `Chart.yaml` |
+| `app_version` | string | No | `""` | Sets `appVersion` when not empty |
 | `workload_identity_provider` | string | No | - | GCP Workload Identity Provider (GCP only) |
 | `service_account` | string | No | - | GCP Service Account (GCP only) |
 | `gcp_project_id` | string | No | - | GCP project ID (GCP only) |
@@ -85,6 +88,27 @@ jobs:
       aws_role_arn: ${{ vars.AWS_ROLE_ARN }}
       aws_account_id: ${{ vars.AWS_ACCOUNT_ID }}
 ```
+
+**Example (GitHub Container Registry):**
+
+The chart is pushed to `oci://ghcr.io/<repository_name>/<chart>`. No secret: the workflow logs in
+with the workflow's `GITHUB_TOKEN`, so the caller grants `packages: write`.
+
+```yaml
+jobs:
+  build:
+    permissions:
+      contents: write
+      packages: write
+    uses: martoc/workflow-helm-chart/.github/workflows/build.yml@v0
+    with:
+      registry: github
+      repository_name: ${{ github.repository_owner }}/charts
+      chart_path: charts/my-app
+```
+
+`deploy.yml` does not pull from `ghcr.io`; install such a chart with
+`helm install <release> oci://ghcr.io/<repository_name>/<chart>`.
 
 ### deploy.yml
 
