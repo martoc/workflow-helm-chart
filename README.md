@@ -10,11 +10,12 @@ Reusable GitHub Actions workflows for building and deploying Helm charts to clou
 |----------|----------|---------|----------------|
 | GCP | Artifact Registry | GKE | Workload Identity Federation |
 | AWS | ECR | EKS | IAM Role ARN (OIDC) |
+| GitHub | Container Registry (`ghcr.io`) | - (build only) | Workflow `GITHUB_TOKEN` |
 
 ## Features
 
 - Helm chart linting and packaging
-- Push to GCP Artifact Registry or AWS ECR
+- Push to GCP Artifact Registry, AWS ECR or the GitHub Container Registry (ghcr.io)
 - Deploy to GKE or EKS clusters
 - Automatic semantic versioning
 - Workload Identity Federation support (GCP)
@@ -39,6 +40,21 @@ jobs:
       gcp_project_id: my-project
       workload_identity_provider: ${{ vars.WIF_PROVIDER }}
       service_account: ${{ vars.SERVICE_ACCOUNT }}
+```
+
+### Build Workflow (GitHub Container Registry)
+
+```yaml
+jobs:
+  build:
+    permissions:
+      contents: write
+      packages: write
+    uses: martoc/workflow-helm-chart/.github/workflows/build.yml@v0
+    with:
+      registry: github
+      repository_name: ${{ github.repository_owner }}/charts
+      chart_path: charts/my-app
 ```
 
 ### Deploy Workflow (GCP)

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This repository contains reusable GitHub Actions workflows for building and deploying Helm charts to GCP (Artifact Registry/GKE) and AWS (ECR/EKS).
+This repository contains reusable GitHub Actions workflows for building and deploying Helm charts to GCP (Artifact Registry/GKE) and AWS (ECR/EKS), and for building them to the GitHub Container Registry (ghcr.io).
 
 ## Repository Structure
 
